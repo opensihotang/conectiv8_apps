@@ -6,6 +6,19 @@
     <title>Document</title>
 </head>
 <body>
-    <p>Register form</p>
+    <h2>Register User</h2>
+    <form action="/users/register" method="POST">
+        <p>Username</p>
+        <input type="text" name="userName">
+        <p>Password</p>
+        <input type="text" name="password" id="">
+        <p>Role : </p>
+        <select name="role" id="">
+            <option value="" disabled selected hidden>Select Role</option>
+            <option value="admin"> Admin</option>
+            <option value="user">User</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
