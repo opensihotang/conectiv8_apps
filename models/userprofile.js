@@ -13,18 +13,32 @@ module.exports = (sequelize, DataTypes) => {
       UserProfile.belongsTo(models.User)
       // define association here
     }
-    get formatDate(){
+    get formatDate() {
       const formatDate = new Date(this.birthDate)
       return formatDate.toISOString().split('T')[0]
-  }
+    }
+    static findByUserId(userId) {
+      return this.findOne({
+        where: {
+          UserId: userId,
+        },
+      });
+    }
+
   }
   UserProfile.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: true
+      }
+    },
     gender: DataTypes.STRING,
     birthDate: DataTypes.DATE,
-    UserId: DataTypes.INTEGER
+    UserId: DataTypes.INTEGER,
+    bio: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'UserProfile',

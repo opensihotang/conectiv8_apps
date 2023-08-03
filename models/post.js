@@ -14,6 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsToMany(models.Tag,{through : "PostTag"})
       // define association here
     }
+    getFormattedDate() {
+      const date = this.createdAt;
+      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
+
+    static findByUserId(userId) {
+      return this.findAll({
+        where: {
+          UserId: userId,
+        },
+      });
+    }
+  
   }
   Post.init({
     imageUrl: DataTypes.STRING,
