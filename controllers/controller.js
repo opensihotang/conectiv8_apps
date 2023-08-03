@@ -74,6 +74,19 @@ class Controller {
         User.findAll({
             include: Post
         })
+        .then((users) => {
+            // console.log(users);
+            res.render('postHome', {users})
+        })
+    }
+    static showUsers(req, res){
+        User.findAll()
+        .then(data=>{
+            res.render('listUser', {data})
+        })
+        .catch(err=>{
+            res.send(err)
+        })
             .then((users) => {
                 // console.log(users);
                 res.render('postHome', { users })
@@ -157,29 +170,37 @@ class Controller {
                 res.send(err)
 
             })
-
     }
 
     static renderAddPost(req, res) {
         res.render('formAddPost')
     }
 
-    static handleAddPost(req, res) {
-        const { uploadfile } = req.file
-        const { description } = req.body
-        // console.log(req.file);
-        // console.log(req.body);
+    static handleAddPost(req, res){
+        const id = req.session.userId;
+        // const {uploadfile} = req.file
+        const {description} = req.body
+        if (req.file){
+           const filename = req.file.filename;
+           Post.create({description, imageUrl : '/assets/' + filename, UserId : id})
+           .then(data =>{
+               res.redirect('/posts')
+           })
+           .catch(err => {
+               res.send(err)
+           })
+       } else {
+        Post.create({description, UserId : id})
+           .then(data =>{
+               res.redirect('/posts')
+           })
+           .catch(err => {
+               res.send(err)
+           })
+       }
 
-        Post.create({ description })
-            .then(data => {
-                res.redirect('/posts')
-            })
-            .catch(err => {
-                res.send(err)
-            })
 
     }
-
 }
 
 module.exports = Controller
