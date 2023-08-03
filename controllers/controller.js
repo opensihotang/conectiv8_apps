@@ -70,9 +70,11 @@ class Controller{
     }
 
     static renderPostHome(req, res){
-        User.findAll()
+        User.findAll({
+            include : Post
+        })
         .then((users) => {
-            // console.log(users);
+            console.log(users);
             res.render('postHome', {users})
         })
     }

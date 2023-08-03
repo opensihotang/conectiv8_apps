@@ -14,9 +14,15 @@
         <button><a href="/users/logout">Log Out</a></button>
     </div>
     <div class="content">
-        <% users.forEach(el => {%>
-            <%= el.userName %>
-       <% });  %>
+        <% users.forEach(user => { %>
+            <% if (user.Posts.length > 0) { %> <!-- Missing closing parenthesis after 0 -->
+                <p><%= user.userName %></p>
+                <% user.Posts.forEach(post => { %>
+                    <img src="<%= post.imageUrl %>" alt="">
+                    <p><%= post.description %></p>
+                <% }) %>
+            <% } %>
+        <% }); %>
     </div>
 </body>
 </html>

@@ -10,6 +10,7 @@ router.post('/login', Controller.handleLogin)
 
 router.get('/logout', Controller.handleLogOut)
 
+// router.get('/users/userProfile', Controller.userProfile)
 
 router.get('/', Controller.test)
 
