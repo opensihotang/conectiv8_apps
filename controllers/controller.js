@@ -93,9 +93,29 @@ class Controller{
         })
         .catch(err=>{
             res.send(err)
+
         })
     }
 
+    static renderAddPost(req, res){
+        res.render('formAddPost')
+    }
+
+    static handleAddPost(req, res){
+        const {uploadfile} = req.file
+        const {description} = req.body
+        console.log(req.file);
+        console.log(req.body);
+
+        Post.create({description})
+        .then(data =>{
+            res.redirect('/posts')
+        })
+        .catch(err => {
+            res.send(err)
+        })
+
+    }
 
 }
 
