@@ -19,6 +19,7 @@ app.use(session ({
     secure : false
   }
 }))
+app.use('/assets', express.static('/HACKTIV8/PHASE-1/PairProject/conectiv8_apps/assets'));
 app.use(router)
 
 app.listen(port, () => {
