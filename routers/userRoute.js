@@ -12,6 +12,7 @@ router.get('/logout', Controller.handleLogOut)
 
 
 router.get('/', Controller.test)
+
 router.get('/listUser', Controller.showUsers)
 
 router.get('/userProfile/:id', Controller.userProfile)
