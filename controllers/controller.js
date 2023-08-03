@@ -78,6 +78,7 @@ class Controller{
             console.log(users);
             res.render('postHome', {users})
         })
+    }
 
     static showUsers(req, res){
         User.findAll()
