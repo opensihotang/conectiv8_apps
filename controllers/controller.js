@@ -69,7 +69,33 @@ class Controller{
         })
     }
 
+    static renderPostHome(req, res){
+        User.findAll()
+        .then((users) => {
+            // console.log(users);
+            res.render('postHome', {users})
+        })
+    }
 
+    static renderAddPost(req, res){
+        res.render('formAddPost')
+    }
+
+    static handleAddPost(req, res){
+        const {uploadfile} = req.file
+        const {description} = req.body
+        console.log(req.file);
+        console.log(req.body);
+
+        Post.create({description})
+        .then(data =>{
+            res.redirect('/posts')
+        })
+        .catch(err => {
+            res.send(err)
+        })
+
+    }
 
 }
 
