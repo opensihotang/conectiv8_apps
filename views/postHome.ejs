@@ -7,9 +7,12 @@
 </head>
 <body>
 
-    <h2>Connectiv8</h2>
+    <h2><a href="/posts">Connectiv8</a></h2>
     <div class="container">
-        <button><a href="#">User Profile</a></button>
+        <% if (error) { %>
+            <p style="color: red;"><%= error %></p>
+        <%  } %>
+        <button><a href="/users/profile">User Profile</a></button>
         <button><a href="/posts/add">Add Post</a></button>
         <!-- <button><a href="#">List Users</a></button> -->
         <a href="/users/listUser"><button>List User</button></a>
