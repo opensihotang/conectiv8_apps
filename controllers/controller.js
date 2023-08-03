@@ -69,6 +69,7 @@ class Controller{
         })
     }
 
+
     static renderPostHome(req, res){
         User.findAll({
             include : Post
@@ -77,6 +78,34 @@ class Controller{
             console.log(users);
             res.render('postHome', {users})
         })
+
+    static showUsers(req, res){
+        User.findAll()
+        .then(data=>{
+            res.render('listUser', {data})
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+    }
+
+    static userProfile(req, res){
+        // console.log(req.params);
+        const {id} = req.params
+        User.findByPk(id,{
+            include:{
+                model: UserProfile
+            }
+        })
+        .then(data=>{
+            console.log(data);
+            res.render('userProfile', {user: data})
+        })
+        .catch(err=>{
+            res.send(err)
+
+        })
+
     }
 
     static renderAddPost(req, res){

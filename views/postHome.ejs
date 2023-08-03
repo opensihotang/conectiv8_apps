@@ -6,12 +6,14 @@
     <title>Document</title>
 </head>
 <body>
+
     <h2>Connectiv8</h2>
     <div class="container">
         <button><a href="#">User Profile</a></button>
         <button><a href="/posts/add">Add Post</a></button>
         <button><a href="#">List Users</a></button>
         <button><a href="/users/logout">Log Out</a></button>
+        <a href="/users/listUser"><button>List User</button></a>
     </div>
     <div class="content">
         <% users.forEach(user => { %>
@@ -23,6 +25,13 @@
                 <% }) %>
             <% } %>
         <% }); %>
+    </div>
+        <a href="/users/listUser"><button>List User</button></a>
+    </div>
+    <div class="content">
+        <% users.forEach(el => {%>
+            <%= el.userName %>
+       <% });  %>
     </div>
 </body>
 </html>

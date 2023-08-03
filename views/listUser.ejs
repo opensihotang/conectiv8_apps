@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>User List</h1>
+
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Profile</th>
+        </tr>
+
+        <% data.forEach(el => { %>
+         <tr>
+            <td><%= el.userName %></td>
+            <td><%= el.role %></td>
+            <td>
+                <a href="/users/userProfile/<%= el.id %>"><button>View Profile</button></a>
+            </td>
+         </tr>
+        <% }) %>
+
+    </table>
+</body>
+</html>
