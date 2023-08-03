@@ -69,6 +69,10 @@ class Controller{
         })
     }
 
+    static userProfile(req, res){
+        const {userId} = req.params
+        UserProfile.findByPk(userId)
+    }
 
 
 }
