@@ -8,9 +8,10 @@ router.get('/login', Controller.renderLoginPage)
 router.post('/login', Controller.handleLogin)
 router.get('/logout', Controller.handleLogOut)
 
-router.get('/users/userProfile', Controller.userProfile)
 
 router.get('/', Controller.test)
+router.get('/listUser', Controller.showUsers)
 
+router.get('/userProfile/:id', Controller.userProfile)
 
 module.exports = router

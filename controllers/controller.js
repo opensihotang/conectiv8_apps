@@ -69,14 +69,31 @@ class Controller{
         })
     }
 
+    static showUsers(req, res){
+        User.findAll()
+        .then(data=>{
+            res.render('listUser', {data})
+        })
+        .catch(err=>{
+            res.send(err)
+        })
+    }
+
     static userProfile(req, res){
-        const {userId} = req.params
-        UserProfile.findByPk(userId, {
+        // console.log(req.params);
+        const {id} = req.params
+        User.findByPk(id,{
             include:{
-                model: User, Post
+                model: UserProfile
             }
         })
-        .then()
+        .then(data=>{
+            console.log(data);
+            res.render('userProfile', {user: data})
+        })
+        .catch(err=>{
+            res.send(err)
+        })
     }
 
 
