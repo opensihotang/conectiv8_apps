@@ -45,6 +45,7 @@ class Controller {
                     const validPassword = bcrypt.compareSync(password, user.password)
                     if (validPassword) {
                         req.session.userId = user.id //set session di controller setelah login
+                        req.session.role = user.role
                         // console.log(req.session.id, "ini user.id");
                         return res.redirect('/posts')
                     } else {
@@ -72,6 +73,7 @@ class Controller {
     }
 
     static renderPostHome(req, res){
+        const{error} = req.query
         const {search} = req.query
         if(search){
             User.findAll({ 
@@ -87,7 +89,7 @@ class Controller {
             })
             .then((users) => {
                 // console.log(users);
-                res.render('postHome', {users, formatDate})
+                res.render('postHome', {users, formatDate, error})
             })
             .catch((err) => {
                 res.send(err)
@@ -101,7 +103,7 @@ class Controller {
             })
             .then((users) => {
                 // console.log(users);
-                res.render('postHome', {users, formatDate})
+                res.render('postHome', {users, formatDate, error})
             })
             .catch((err) => {
                 res.send(err)
@@ -207,6 +209,7 @@ class Controller {
 
     static handleAddPost(req, res){
         const id = req.session.userId;
+        // const{error} = req.query
         // const {uploadfile} = req.file
         const {description} = req.body
         if (req.file){

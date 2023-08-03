@@ -6,7 +6,7 @@ const upload = require("../multer/multer")
 
 
 router.use(function(req, res, next){
-    // console.log(req.session.userId);
+    // console.log(req.session.role);
     // console.log("Time", Date.now(), 'hahahahahpost');
     if(!req.session.userId){
         const error = "Please Login First"
