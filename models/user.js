@@ -20,13 +20,21 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init({
     userName: DataTypes.STRING,
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      validate:{
+        len: {
+          args:[8, 16],
+          msg: "Password Minimum 8 Characters"
+        }
+      }
+    },
     role: DataTypes.STRING
   }, {
-    hooks : {
-      beforeCreate(user, options){
+    hooks: {
+      beforeCreate(user, options) {
         let salt = bcrypt.genSaltSync(10)
-        let hash = bcrypt.hashSync(user.password,salt)
+        let hash = bcrypt.hashSync(user.password, salt)
 
         user.password = hash
       }

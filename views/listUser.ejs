@@ -3,28 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            color: #007BFF;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        a.name-btn,
+        a.position-btn {
+            display: inline-block;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .delete-btn {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .delete-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
 </head>
 <body>
-    <h1>User List</h1>
-
-    <table>
+    <h1><a href="/users/listUser">User List</a></h1>
+    <button><a href="/posts">Back</a></button>
+    <p>Sort By : </p>
+    <a class="name-btn" href="/users/listUser/?sort=userName">User Name</a>
+    <a class="position-btn" href="/users/listUser/?sort=role">Role</a>
+    <a class="position-btn" href="/users/listUser/?sort=createdAt">CreateAt</a>
+    <table border="1">
         <tr>
             <th>Username</th>
             <th>Role</th>
-            <th>Profile</th>
+            <th>Created Date</th>
+            <th>Updated Date</th>
+            <th>Action</th>
         </tr>
 
         <% data.forEach(el => { %>
-         <tr>
-            <td><%= el.userName %></td>
-            <td><%= el.role %></td>
-            <td>
-                <a href="/users/userProfile/<%= el.id %>"><button>View Profile</button></a>
-            </td>
-         </tr>
+            <tr>
+                <td><%= el.userName %></td>
+                <td><%= el.role %></td>
+                <td><%= formatDateUser(el.createdAt) %></td>
+                <td><%= formatDateUser(el.updatedAt) %></td>
+                <td>
+                    <a class="delete-btn" href="/users/listUser/delete/<%= el.id %>">Delete</a>
+                </td>
+            </tr>
         <% }) %>
-
     </table>
 </body>
 </html>
