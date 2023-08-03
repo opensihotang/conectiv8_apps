@@ -72,15 +72,12 @@
 <body>
     <h3>Add Post</h3>
     <form action="/posts/add" method="post" enctype="multipart/form-data">
-        <p>Masukin broooo gambarnya</p>
+        <p>Select your photo</p>
         <input type="file" name="uploadfile" required>
         <p>Caption</p>
         <input type="text" name="description" required>
-        <select name="tagId" required>
-            <% tags.forEach(el => { %>
-                <option value="<%= el.id %>"><%= el.name %></option>
-            <% }) %>
-        </select>
+        <p>Input Tag</p>
+        <input type="text" name="tag" placeholder="input tag">
         <button type="submit">Post</button>
     </form>
 </body>

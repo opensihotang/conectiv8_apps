@@ -182,7 +182,7 @@ class Controller {
     }
 
     static updateProfile(req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         const { userId } = req.session
         // UserProfile.update()
         const { firstName, lastName, email, gender, birthDate, bio } = req.body
@@ -277,29 +277,39 @@ class Controller {
 
     static handleAddPost(req, res) {
         const id = req.session.userId;
-        // const{error} = req.query
-        // const {uploadfile} = req.file
-        const { description } = req.body
+        const { description, tag } = req.body
         if (req.file) {
             const filename = req.file.filename;
             Post.create({ description, imageUrl: '/assets/' + filename, UserId: id })
-                .then(data => {
-                    res.redirect('/posts')
-                })
-                .catch(err => {
-                    res.send(err)
-                })
-        } else {
+              .then(post => {
+                console.log(post);
+                if (tag) {
+                  Tag.create({ name : tag}).then(() => {
+                    res.redirect('/posts');
+                  });
+                } else {
+                  res.redirect('/posts');
+                }
+              })
+              .catch(err => {
+                res.send(err);
+              });
+          } else {
             Post.create({ description, UserId: id })
-                .then(data => {
-                    res.redirect('/posts')
-                })
-                .catch(err => {
-                    res.send(err)
-                })
-        }
-
-
+              .then(post => {
+                // console.log(post);
+                if (tag) {
+                  Tag.create({ tag}).then(() => {
+                    res.redirect('/posts');
+                  });
+                } else {
+                  res.redirect('/posts');
+                }
+              })
+              .catch(err => {
+                res.send(err);
+              });
+          }
     }
 }
 
