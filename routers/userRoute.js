@@ -12,6 +12,7 @@ router.get('/logout', Controller.handleLogOut)
 
 router.get('/', Controller.test)
 
+
 router.get('/profile', Controller.profile)
 router.post('/profile', Controller.updateProfile)
 
