@@ -6,25 +6,32 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>User List</h1>
-
-    <table>
+    <h1><a href="/users/listUser">User List</a></h1>
+    <button><a href="/posts">Back</a></button>
+    <p>Sort By : </p>
+    <a class="name-btn" href="/users/listUser/?sort=userName">User Name</a>
+    <a class="position-btn" href="/users/listUser/?sort=role">Role</a>
+    <a class="position-btn" href="/users/listUser/?sort=createdAt">CreateAt</a>
+    <table border="1">
         <tr>
             <th>Username</th>
             <th>Role</th>
-            <th>Profile</th>
+            <th>Cretaed Date</th>
+            <th>Updated Date</th>
+            <th>Action</th>
         </tr>
 
         <% data.forEach(el => { %>
          <tr>
             <td><%= el.userName %></td>
             <td><%= el.role %></td>
+            <td><%= formatDateUser(el.createdAt) %></td>
+            <td><%= formatDateUser(el.updatedAt) %></td>
             <td>
-                <a href="/users/userProfile/<%= el.id %>"><button>View Profile</button></a>
+                 <a class="delete-btn" href="/users/listUser/delete/<%= el.id %>">Delete</a>
             </td>
          </tr>
         <% }) %>
-
     </table>
 </body>
 </html>

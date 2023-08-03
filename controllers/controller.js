@@ -1,6 +1,7 @@
 const { User, UserProfile, Post, Tag, PostTag } = require("../models")
 const bcrypt = require("bcryptjs")
 const formatDate = require("../helpers/formatDate")
+const formatDateUser = require("../helpers/formatDateUser")
 const { Op } = require("sequelize")
 
 class Controller {
@@ -125,13 +126,32 @@ class Controller {
     }
 
     static showUsers(req, res) {
-        User.findAll()
+        const {sort} = req.query
+        // console.log(req.query);
+        if(sort){
+            User.findAll({
+                order: [
+                    [`${sort}`]
+                ]
+            })
             .then(data => {
-                res.render('listUser', { data })
+                // console.log(data);
+                res.render('listUser', { data, formatDateUser})
             })
             .catch(err => {
                 res.send(err)
             })
+        } else 
+        {
+            User.findAll()
+                .then(data => {
+                    // console.log(data);
+                    res.render('listUser', { data, formatDateUser})
+                })
+                .catch(err => {
+                    res.send(err)
+                })
+        }
     }
 
     static profile(req, res) {
@@ -185,22 +205,52 @@ class Controller {
             })
     }
 
-    static userProfile(req, res) {
-        // console.log(req.params);
-        const { id } = req.params
-        User.findByPk(id, {
-            include: {
-                model: UserProfile
-            }
-        })
-            .then(data => {
-                // console.log(data);
-                res.render('userProfile', { user: data })
-            })
-            .catch(err => {
-                res.send(err)
+    // static userProfile(req, res) {
+    //     // console.log(req.params);
+    //     const { id } = req.params
+    //     User.findByPk(id, {
+    //         include: {
+    //             model: UserProfile
+    //         }
+    //     })
+    //         .then(data => {
+    //             // console.log(data);
+    //             res.render('userProfile', { user: data })
+    //         })
+    //         .catch(err => {
+    //             res.send(err)
 
-            })
+    //         })
+    // }
+
+    static deleteUser(req, res) {
+        const { id } = req.params;
+
+        Post.destroy({
+            where: {
+                UserId: id,
+            },
+        })
+        .then(() => {
+            return UserProfile.destroy({
+                where: {
+                    UserId: id,
+                },
+            });
+        })
+        .then(() => {
+            return User.destroy({
+                where: {
+                    id: id,
+                },
+            });
+        })
+        .then(() => {
+            res.redirect('/users/listUser');
+        })
+        .catch((err) => {
+            res.send(err);
+        });
     }
 
     static renderAddPost(req, res) {
