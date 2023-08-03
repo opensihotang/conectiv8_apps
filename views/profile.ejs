@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Your Profile</h1>
+    <a href="/posts"><button>Back Home</button></a>
+    <form action="/users/profile" method="post">
+        <p>
+            First Name:
+            <input type="text" name="firstName" value="<%= profile.firstName %>">
+        </p>
+        <p>
+            Last Name:
+            <input type="text" name="lastName" value="<%= profile.lastName %>">
+        </p>
+        <p>
+            Email:
+            <input type="text" name="email" value="<%= profile.email %>">
+        </p>
+        <p>
+            Gender:
+            <select name="gender" >
+                <option value="Male" <%= profile.gender === 'Male' ? 'selected' : '' %>>Male</option>
+                <option value="Female" <%= profile.gender === 'Female' ? 'selected' : '' %>>Female</option>
+            </select>
+        </p>
+        <p>
+            Birth of Date:
+            <input type="date" name="birthDate" value="<%= profile.formatDate %>">
+        </p>
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>
