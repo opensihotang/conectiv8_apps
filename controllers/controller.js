@@ -1,5 +1,7 @@
 const { User, UserProfile, Post, Tag, PostTag } = require("../models")
 const bcrypt = require("bcryptjs")
+const formatDate = require("../helpers/formatDate")
+const { Op } = require("sequelize")
 
 class Controller {
     static test(req, res) {
@@ -69,15 +71,42 @@ class Controller {
         })
     }
 
-
-    static renderPostHome(req, res) {
-        User.findAll({
-            include: Post
-        })
-        .then((users) => {
-            // console.log(users);
-            res.render('postHome', {users})
-        })
+    static renderPostHome(req, res){
+        const {search} = req.query
+        if(search){
+            User.findAll({ 
+                where : {
+                    userName : {
+                        [Op.iLike] : `%${search}%`
+                    }
+                },
+                include : Post,
+                order : [
+                    ["createdAt", "desc"]
+                ]
+            })
+            .then((users) => {
+                // console.log(users);
+                res.render('postHome', {users, formatDate})
+            })
+            .catch((err) => {
+                res.send(err)
+            })
+        } else {
+            User.findAll({
+                include : Post,
+                order : [
+                    ["createdAt", "desc"]
+                ]
+            })
+            .then((users) => {
+                // console.log(users);
+                res.render('postHome', {users, formatDate})
+            })
+            .catch((err) => {
+                res.send(err)
+            })
+        }
     }
     static showUsers(req, res){
         User.findAll()
