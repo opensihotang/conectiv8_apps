@@ -11,15 +11,20 @@
     <div class="container">
         <button><a href="#">User Profile</a></button>
         <button><a href="/posts/add">Add Post</a></button>
-        <button><a href="#">List Users</a></button>
-        <button><a href="/users/logout">Log Out</a></button>
+        <!-- <button><a href="#">List Users</a></button> -->
         <a href="/users/listUser"><button>List User</button></a>
+        <button><a href="/users/logout">Log Out</a></button>
+        <form action="">
+            <input type="text" name="search">
+            <button type="submit">Search</button>
+          </form>
     </div>
     <div class="content">
         <% users.forEach(user => { %>
             <% if (user.Posts.length > 0) { %> <!-- Missing closing parenthesis after 0 -->
                 <p><%= user.userName %></p>
                 <% user.Posts.forEach(post => { %>
+                    <p>Posted at : <%= formatDate(post.createdAt) %></p>
                     <img src="<%= post.imageUrl %>" alt="">
                     <p><%= post.description %></p>
                 <% }) %>
