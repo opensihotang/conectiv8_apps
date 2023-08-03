@@ -75,10 +75,10 @@ class Controller{
             include : Post
         })
         .then((users) => {
-            console.log(users);
+            // console.log(users);
             res.render('postHome', {users})
         })
-
+    }
     static showUsers(req, res){
         User.findAll()
         .then(data=>{
@@ -98,14 +98,13 @@ class Controller{
             }
         })
         .then(data=>{
-            console.log(data);
+            // console.log(data);
             res.render('userProfile', {user: data})
         })
         .catch(err=>{
             res.send(err)
 
         })
-
     }
 
     static renderAddPost(req, res){
@@ -113,21 +112,30 @@ class Controller{
     }
 
     static handleAddPost(req, res){
-        const {uploadfile} = req.file
+        const id = req.session.userId;
+        // const {uploadfile} = req.file
         const {description} = req.body
-        console.log(req.file);
-        console.log(req.body);
+        if (req.file){
+           const filename = req.file.filename;
+           Post.create({description, imageUrl : '/assets/' + filename, UserId : id})
+           .then(data =>{
+               res.redirect('/posts')
+           })
+           .catch(err => {
+               res.send(err)
+           })
+       } else {
+        Post.create({description, UserId : id})
+           .then(data =>{
+               res.redirect('/posts')
+           })
+           .catch(err => {
+               res.send(err)
+           })
+       }
 
-        Post.create({description})
-        .then(data =>{
-            res.redirect('/posts')
-        })
-        .catch(err => {
-            res.send(err)
-        })
 
     }
-
 }
 
 module.exports = Controller
