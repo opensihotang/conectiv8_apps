@@ -152,8 +152,8 @@ class Controller {
         console.log(req.body);
         const { userId } = req.session
         // UserProfile.update()
-        const { firstName, lastName, email, gender, birthDate } = req.body
-        UserProfile.update({ firstName, lastName, email, gender, birthDate }, {
+        const { firstName, lastName, email, gender, birthDate, bio } = req.body
+        UserProfile.update({ firstName, lastName, email, gender, birthDate, bio }, {
             where: {
                 UserId : userId
             }
@@ -173,8 +173,9 @@ class Controller {
     static insertProfile(req, res) {
         // console.log(req.body);
         const id = req.session.userId
-        const { firstName, lastName, email, gender, birthDate } = req.body
-        UserProfile.create({ firstName, lastName, email, gender, birthDate, UserId: id })
+        console.log(id);
+        const { firstName, lastName, email, gender, birthDate, bio } = req.body
+        UserProfile.create({ firstName, lastName, email, gender, birthDate, UserId: id, bio })
             .then(() => {
                 res.redirect('/users/profile')
             })
