@@ -14,18 +14,25 @@ class Controller {
     }
 
     static renderRegisterPage(req, res) {
-        res.render('registerPage')
+        const { errors } = req.query
+        res.render('registerPage', {errors})
     }
 
     static handleRegister(req, res) {
         const { userName, password, role } = req.body
         // console.log(req.body);
+
         User.create({ userName, password, role })
             .then((data) => {
                 res.redirect('/')
             })
             .catch((err) => {
-                res.send(err)
+                if (err.name === 'SequelizeValidationError') {
+                    const errors = err.errors.map(el => el.message)
+                    res.redirect(`/users/register?errors=${errors}`)
+                } else {
+                    res.send(err)
+                }
             })
     }
 
@@ -73,80 +80,84 @@ class Controller {
         })
     }
 
-    static renderPostHome(req, res){
-        const{error} = req.query
-        const {search} = req.query
-        if(search){
-            User.findAll({ 
-                where : {
-                    userName : {
-                        [Op.iLike] : `%${search}%`
+    static renderPostHome(req, res) {
+        const { error } = req.query
+        const { search } = req.query
+        if (search) {
+            User.findAll({
+                where: {
+                    userName: {
+                        [Op.iLike]: `%${search}%`
                     }
                 },
-                include : Post,
-                order : [
+                include: Post,
+                order: [
                     ["createdAt", "desc"]
                 ]
             })
-            .then((users) => {
-                // console.log(users);
-                res.render('postHome', {users, formatDate, error})
-            })
-            .catch((err) => {
-                res.send(err)
-            })
+                .then((users) => {
+                    // console.log(users);
+                    res.render('postHome', { users, formatDate, error })
+                })
+                .catch((err) => {
+                    res.send(err)
+                })
         } else {
             User.findAll({
-                include : Post,
-                order : [
+                include: Post,
+                order: [
                     ["createdAt", "desc"]
                 ]
             })
-            .then((users) => {
-                // console.log(users);
-                res.render('postHome', {users, formatDate, error})
-            })
-            .catch((err) => {
-                res.send(err)
-            })
+                .then((users) => {
+                    // console.log(users);
+                    res.render('postHome', { users, formatDate, error })
+                })
+                .catch((err) => {
+                    res.send(err)
+                })
         }
     }
-    static showUsers(req, res){
-        User.findAll()
-        .then(data=>{
-            res.render('listUser', {data})
-        })
-        .catch(err=>{
-            res.send(err)
-        })
-            .then((users) => {
-                // console.log(users);
-                res.render('postHome', { users })
-            })
-    }
+// <<<<<<< HEAD
+
+//     static showUsers(req, res){
+// =======
+//     static showUsers(req, res) {
+// >>>>>>> 837cb6103c6885611519d03d0ca2ffe9f40dd83a
+//         User.findAll()
+//             .then(data => {
+//                 res.render('listUser', { data })
+//             })
+//             .catch(err => {
+//                 res.send(err)
+//             })
+//             .then((users) => {
+//                 // console.log(users);
+//                 res.render('postHome', { users })
+//             })
+//     }
 
     static showUsers(req, res) {
-        const {sort} = req.query
+        const { sort } = req.query
         // console.log(req.query);
-        if(sort){
+        if (sort) {
             User.findAll({
                 order: [
                     [`${sort}`]
                 ]
             })
-            .then(data => {
-                // console.log(data);
-                res.render('listUser', { data, formatDateUser})
-            })
-            .catch(err => {
-                res.send(err)
-            })
-        } else 
-        {
+                .then(data => {
+                    // console.log(data);
+                    res.render('listUser', { data, formatDateUser })
+                })
+                .catch(err => {
+                    res.send(err)
+                })
+        } else {
             User.findAll()
                 .then(data => {
                     // console.log(data);
-                    res.render('listUser', { data, formatDateUser})
+                    res.render('listUser', { data, formatDateUser })
                 })
                 .catch(err => {
                     res.send(err)
@@ -157,7 +168,7 @@ class Controller {
     static profile(req, res) {
         const { userId } = req.session
         console.log(userId);
-        UserProfile.findByPk(userId)
+        UserProfile.findByUserId(userId)
             .then(profile => {
                 if (profile) {
                     res.render('profile', { profile })
@@ -171,19 +182,19 @@ class Controller {
     }
 
     static updateProfile(req, res) {
-        console.log(req.body);
+        // console.log(req.body);
         const { userId } = req.session
         // UserProfile.update()
-        const { firstName, lastName, email, gender, birthDate } = req.body
-        UserProfile.update({ firstName, lastName, email, gender, birthDate }, {
+        const { firstName, lastName, email, gender, birthDate, bio } = req.body
+        UserProfile.update({ firstName, lastName, email, gender, birthDate, bio }, {
             where: {
-                UserId : userId
+                UserId: userId
             }
         })
-            .then(()=>{
+            .then(() => {
                 res.redirect('/users/profile')
             })
-            .catch(err=>{
+            .catch(err => {
                 res.send(err)
             })
     }
@@ -194,9 +205,9 @@ class Controller {
 
     static insertProfile(req, res) {
         // console.log(req.body);
-        const id = req.session.userId
-        const { firstName, lastName, email, gender, birthDate } = req.body
-        UserProfile.create({ firstName, lastName, email, gender, birthDate, UserId: id })
+        const userId = req.session.userId
+        const { firstName, lastName, email, gender, birthDate, bio } = req.body
+        UserProfile.create({ firstName, lastName, email, gender, birthDate, UserId: userId, bio })
             .then(() => {
                 res.redirect('/users/profile')
             })
@@ -231,57 +242,74 @@ class Controller {
                 UserId: id,
             },
         })
-        .then(() => {
-            return UserProfile.destroy({
-                where: {
-                    UserId: id,
-                },
+            .then(() => {
+                return UserProfile.destroy({
+                    where: {
+                        UserId: id,
+                    },
+                });
+            })
+            .then(() => {
+                return User.destroy({
+                    where: {
+                        id: id,
+                    },
+                });
+            })
+            .then(() => {
+                res.redirect('/users/listUser');
+            })
+            .catch((err) => {
+                res.send(err);
             });
-        })
-        .then(() => {
-            return User.destroy({
-                where: {
-                    id: id,
-                },
-            });
-        })
-        .then(() => {
-            res.redirect('/users/listUser');
-        })
-        .catch((err) => {
-            res.send(err);
-        });
     }
 
     static renderAddPost(req, res) {
-        res.render('formAddPost')
+        Tag.findAll()
+        .then(tags=>{
+            console.log(tags);
+            res.render('formAddPost', {tags})
+        })
+        .catch(err=>{
+            res.send(err)
+        })
     }
 
-    static handleAddPost(req, res){
+    static handleAddPost(req, res) {
         const id = req.session.userId;
-        // const{error} = req.query
-        // const {uploadfile} = req.file
-        const {description} = req.body
-        if (req.file){
-           const filename = req.file.filename;
-           Post.create({description, imageUrl : '/assets/' + filename, UserId : id})
-           .then(data =>{
-               res.redirect('/posts')
-           })
-           .catch(err => {
-               res.send(err)
-           })
-       } else {
-        Post.create({description, UserId : id})
-           .then(data =>{
-               res.redirect('/posts')
-           })
-           .catch(err => {
-               res.send(err)
-           })
-       }
-
-
+        const { description, tag } = req.body
+        if (req.file) {
+            const filename = req.file.filename;
+            Post.create({ description, imageUrl: '/assets/' + filename, UserId: id })
+              .then(post => {
+                console.log(post);
+                if (tag) {
+                  Tag.create({ name : tag}).then(() => {
+                    res.redirect('/posts');
+                  });
+                } else {
+                  res.redirect('/posts');
+                }
+              })
+              .catch(err => {
+                res.send(err);
+              });
+          } else {
+            Post.create({ description, UserId: id })
+              .then(post => {
+                // console.log(post);
+                if (tag) {
+                  Tag.create({ tag}).then(() => {
+                    res.redirect('/posts');
+                  });
+                } else {
+                  res.redirect('/posts');
+                }
+              })
+              .catch(err => {
+                res.send(err);
+              });
+          }
     }
 }
 

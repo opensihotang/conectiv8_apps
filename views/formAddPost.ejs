@@ -3,16 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Post</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px;
+            color: #007BFF;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        input[type="file"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        select {
+            appearance: none;
+            background-color: white;
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23007BFF' viewBox='0 0 24 24'%3E%3Cpath d='M12 18l6-9H6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 20px;
+            padding-right: 40px; /* Tambahkan padding untuk icon */
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h3>Add post</h3>
+    <h3>Add Post</h3>
     <form action="/posts/add" method="post" enctype="multipart/form-data">
-    <!-- <form action="/posts/add" method="post"> -->
-        <p>Masukin broooo gambarnya</p>
-        <input type="file" name="uploadfile">
+        <p>Select your photo</p>
+        <input type="file" name="uploadfile" required>
         <p>Caption</p>
-        <input type="text" name="description" id="">
+        <input type="text" name="description" required>
+        <p>Input Tag</p>
+        <input type="text" name="tag" placeholder="input tag">
         <button type="submit">Post</button>
     </form>
 </body>

@@ -3,19 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        p.error {
+            color: red;
+            margin-top: 5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h3>Login dulu gaes</h3>
+    <h1>Login</h1>
     <form action="/users/login" method="post"> 
         <p>Username</p>
-        <input type="text" name="userName" placeholder="Input Username">
+        <input type="text" name="userName" placeholder="Input Username" required>
         <p>Password</p>
-        <input type="password" name="password" placeholder="Input Password">
+        <input type="password" name="password" placeholder="Input Password" required>
         <button type="submit">Login</button>
         <% if(error){%>
-            <p style="color: red;"><%= error %></p>
+            <p class="error"><%= error %></p>
         <%} %>
+        <p>
+            Don't have an account?
+            <a href="/users/register">Sign up</a> now!
+        </p>
     </form>
 </body>
 </html>
