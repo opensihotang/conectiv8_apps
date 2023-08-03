@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Connectiv8</h2>
+    <div class="container">
+        <button><a href="#">User Profile</a></button>
+        <button><a href="/posts/add">Add Post</a></button>
+        <button><a href="#">List Users</a></button>
+        <button><a href="/users/logout">Log Out</a></button>
+    </div>
+    <div class="content">
+        <% users.forEach(user => { %>
+            <% if (user.Posts.length > 0) { %> <!-- Missing closing parenthesis after 0 -->
+                <p><%= user.userName %></p>
+                <% user.Posts.forEach(post => { %>
+                    <img src="<%= post.imageUrl %>" alt="">
+                    <p><%= post.description %></p>
+                <% }) %>
+            <% } %>
+        <% }); %>
+    </div>
+</body>
+</html>

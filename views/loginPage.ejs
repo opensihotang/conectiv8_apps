@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>Login dulu gaes</h3>
+    <form action="/users/login" method="post"> 
+        <p>Username</p>
+        <input type="text" name="userName" placeholder="Input Username">
+        <p>Password</p>
+        <input type="password" name="password" placeholder="Input Password">
+        <button type="submit">Login</button>
+        <% if(error){%>
+            <p style="color: red;"><%= error && error %></p>
+        <%} %>
+    </form>
+</body>
+</html>
