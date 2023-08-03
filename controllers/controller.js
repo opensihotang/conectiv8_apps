@@ -260,7 +260,14 @@ class Controller {
     }
 
     static renderAddPost(req, res) {
-        res.render('formAddPost')
+        Tag.findAll()
+        .then(tags=>{
+            console.log(tags);
+            res.render('formAddPost', {tags})
+        })
+        .catch(err=>{
+            res.send(err)
+        })
     }
 
     static handleAddPost(req, res) {

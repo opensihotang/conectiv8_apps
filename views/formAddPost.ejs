@@ -32,7 +32,9 @@
             margin: 10px 0;
         }
 
-        input[type="file"] {
+        input[type="file"],
+        input[type="text"],
+        select {
             width: 100%;
             padding: 8px;
             font-size: 16px;
@@ -41,13 +43,14 @@
             box-sizing: border-box;
         }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
+        select {
+            appearance: none;
+            background-color: white;
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23007BFF' viewBox='0 0 24 24'%3E%3Cpath d='M12 18l6-9H6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 20px;
+            padding-right: 40px; /* Tambahkan padding untuk icon */
         }
 
         button[type="submit"] {
@@ -73,6 +76,11 @@
         <input type="file" name="uploadfile" required>
         <p>Caption</p>
         <input type="text" name="description" required>
+        <select name="tagId" required>
+            <% tags.forEach(el => { %>
+                <option value="<%= el.id %>"><%= el.name %></option>
+            <% }) %>
+        </select>
         <button type="submit">Post</button>
     </form>
 </body>
