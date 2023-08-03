@@ -69,6 +69,16 @@ class Controller{
         })
     }
 
+
+    static renderPostHome(req, res){
+        User.findAll({
+            include : Post
+        })
+        .then((users) => {
+            console.log(users);
+            res.render('postHome', {users})
+        })
+
     static showUsers(req, res){
         User.findAll()
         .then(data=>{
@@ -95,6 +105,7 @@ class Controller{
             res.send(err)
 
         })
+
     }
 
     static renderAddPost(req, res){

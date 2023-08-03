@@ -7,12 +7,12 @@ module.exports = {
       {
         imageUrl: 'https://babyology.com.au/wp-content/uploads/2019/08/child-dummy-august.jpg',
         description: 'bayi auk lagi ngapain',
-        UserId: 2
+        UserId: 4
       },
       {
         imageUrl: 'https://www.taxmann.com/post/wp-content/uploads/2022/08/10_Blog-Post-2.jpg',
         description: 'ceritanya ini jelasin dummy',
-        UserId: 1
+        UserId: 5
       },
     ]
     const data = posts.map(el=>{
